@@ -1,0 +1,16 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="ApiGateway/ApiGateway.csproj" />
+  <Project Path="ChecklistService/ChecklistService.csproj" Id="90515d31-e3c7-4250-b94a-4dada6d69103" />
+  <Project Path="ExpenseService/ExpenseService.csproj" />
+  <Project Path="TravelPlannerApp/TravelPlannerApp.sfproj">
+    <Platform Project="x64" />
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="TravelService/TravelService.csproj" />
+  <Project Path="UserService/UserService.csproj" />
+</Solution>
