@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ServiceManifest Name="ChecklistServicePkg"
+                 Version="1.0.0"
+                 xmlns="http://schemas.microsoft.com/2011/01/fabric"
+                 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <ServiceTypes>
+    <StatelessServiceType ServiceTypeName="ChecklistServiceType" />
+  </ServiceTypes>
+
+  <CodePackage Name="Code" Version="1.0.0">
+    <EntryPoint>
+      <ExeHost>
+        <Program>ChecklistService.exe</Program>
+        <WorkingFolder>CodePackage</WorkingFolder>
+      </ExeHost>
+    </EntryPoint>
+  </CodePackage>
+
+  <ConfigPackage Name="Config" Version="1.0.0" />
+
+  <Resources>
+    <Endpoints>
+      <!-- Port dodjeljuje SF dinamički; API Gateway zna adresu via Naming Service -->
+      <Endpoint Protocol="http" Name="ServiceEndpoint" Type="Input" />
+    </Endpoints>
+  </Resources>
+
+</ServiceManifest>
