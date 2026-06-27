@@ -13,3 +13,7 @@ frontend/dist/
 *.snk
 packages/
 *.slnLaunch.user
+*.csproj.Backup.tmp
+TravelPlannerApp/pkg/
+TravelPlannerApp/*.sfproj.user
+TravelPlannerApp.slnLaunch.user
