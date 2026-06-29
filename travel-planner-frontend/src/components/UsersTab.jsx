@@ -3,6 +3,8 @@ import { FiUser, FiShield, FiSearch } from 'react-icons/fi';
 import userService from '../services/userService';
 import { useAuth } from '../context/AuthContext';
 import { formatDate } from '../utils/formatDate';
+import Toast from './Toast';
+import { useToast } from '../hooks/useToast';
 
 const getInitials = (name = '') =>
     name
@@ -19,6 +21,7 @@ export default function UsersTab() {
     const [error, setError] = useState('');
     const [search, setSearch] = useState('');
     const [updatingId, setUpdatingId] = useState(null);
+    const { toast, showToast, hideToast } = useToast();
 
     const { user: currentUser } = useAuth();
 
@@ -45,8 +48,9 @@ export default function UsersTab() {
         try {
             const res = await userService.updateRole(id, newRole);
             setUsers(prev => prev.map(u => u.id === id ? res.data : u));
+            showToast('Uloga uspješno promijenjena');
         } catch (err) {
-            alert(err.response?.data?.message || 'Greška pri promjeni uloge');
+            showToast(err.response?.data?.message || 'Greška pri promjeni uloge', 'error');
         } finally {
             setUpdatingId(null);
         }
@@ -54,15 +58,16 @@ export default function UsersTab() {
 
     const handleDelete = async (id, email) => {
         if (currentUser?.email === email) {
-            alert('Ne možete obrisati sopstveni nalog.');
+            showToast('Ne možete obrisati sopstveni nalog.', 'error');
             return;
         }
         if (!window.confirm(`Da li ste sigurni da želite obrisati korisnika ${email}? Ova akcija će obrisati i sve njegove planove putovanja.`)) return;
         try {
             await userService.delete(id);
             setUsers(prev => prev.filter(u => u.id !== id));
+            showToast('Korisnik uspješno obrisan');
         } catch (err) {
-            alert(err.response?.data?.message || 'Greška pri brisanju korisnika');
+         showToast(err.response?.data?.message || 'Greška pri brisanju korisnika', 'error');
         }
     };
 
@@ -76,7 +81,7 @@ export default function UsersTab() {
         <div>
             {error && <p className="error-message">{error}</p>}
 
-            {/* Stat cards */}
+      
             <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
@@ -134,7 +139,7 @@ export default function UsersTab() {
                 ))}
             </div>
 
-            {/* Search */}
+
             <div style={{ position: 'relative', maxWidth: '360px', marginBottom: '1.25rem' }}>
                 <FiSearch
                     size={16}
@@ -164,7 +169,6 @@ export default function UsersTab() {
                 />
             </div>
 
-            {/* Empty */}
             {filteredUsers.length === 0 ? (
                 <div className="empty-state">
                     <p style={{ fontWeight: 600, color: 'var(--text)' }}>Nema rezultata</p>
@@ -189,7 +193,6 @@ export default function UsersTab() {
                                     flexWrap: 'wrap'
                                 }}
                             >
-                                {/* Avatar */}
                                 <div style={{
                                     width: '44px',
                                     height: '44px',
@@ -206,7 +209,6 @@ export default function UsersTab() {
                                     {getInitials(u.name)}
                                 </div>
 
-                                {/* Info */}
                                 <div style={{ flex: '1 1 200px', minWidth: 0 }}>
                                     <div style={{
                                         display: 'flex',
@@ -266,7 +268,6 @@ export default function UsersTab() {
                                     </span>
                                 </div>
 
-                                {/* Actions */}
                                 <div style={{
                                     display: 'flex',
                                     alignItems: 'center',
@@ -331,7 +332,8 @@ export default function UsersTab() {
                         );
                     })}
                 </div>
-            )}
-        </div>
-    );
+        )}
+        {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
+    </div>
+);
 }

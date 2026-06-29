@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import travelPlanService from '../services/travelPlanService';
 import { createTravelPlanModel } from '../models/TravelPlan';
-
+import Toast from './Toast';
+import { useToast } from '../hooks/useToast';
 export default function EditPlanModal({ plan, onClose, onUpdate }) {
     const [formData, setFormData] = useState({
         ...createTravelPlanModel(plan),
@@ -10,6 +11,7 @@ export default function EditPlanModal({ plan, onClose, onUpdate }) {
     });
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
+    const { toast, showToast, hideToast } = useToast();
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -43,7 +45,7 @@ export default function EditPlanModal({ plan, onClose, onUpdate }) {
             });
             onUpdate(res.data);
         } catch (err) {
-            alert(err.response?.data?.message || 'Greška pri ažuriranju plana');
+            showToast(err.response?.data?.message || 'Greška pri ažuriranju plana', 'error');
         } finally {
             setLoading(false);
         }
@@ -195,6 +197,7 @@ export default function EditPlanModal({ plan, onClose, onUpdate }) {
                     </div>
                 </form>
             </div>
+            {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
         </div>
     );
 }
