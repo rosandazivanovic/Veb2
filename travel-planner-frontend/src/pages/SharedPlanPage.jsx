@@ -37,7 +37,7 @@ export default function SharedPlanPage() {
         sharedApi.get(`/travel-plans/${data.plan.id}/expenses`)
             .then(res => setExpenses(res.data || []))
             .catch(() => setExpenses([]));
-    }, [data?.plan?.id]);
+    }, [data?.plan?.id, sharedApi]);
 
     if (loading) return (
         <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -66,7 +66,6 @@ export default function SharedPlanPage() {
     return (
         <div className="shared-plan-container">
 
-            {/* Header */}
             <div style={{
                 display: 'flex',
                 justifyContent: 'space-between',
@@ -122,7 +121,6 @@ export default function SharedPlanPage() {
                 </span>
             </div>
 
-            {/* Budget kartice */}
             <div style={{
                 display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)',
                 gap: '0.75rem', marginBottom: '1.25rem'
@@ -147,7 +145,6 @@ export default function SharedPlanPage() {
                 ))}
             </div>
 
-            {/* Napomene */}
             {plan.notes && (
                 <div style={{
                     background: 'white', border: '1px solid var(--line)', borderRadius: '12px',

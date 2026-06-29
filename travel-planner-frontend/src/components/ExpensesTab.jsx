@@ -7,7 +7,7 @@ import { formatDate } from '../utils/formatDate';
 import Toast from './Toast';
 import { useToast } from '../hooks/useToast';
 export default function ExpensesTab({ planId, plan }) {
-    const { expenses, loading, addExpense, updateExpense, deleteExpense } = useExpenses(planId);
+    const { expenses, loading, error, addExpense, updateExpense, deleteExpense } = useExpenses(planId);
     const [showForm, setShowForm] = useState(false);
     const [editItem, setEditItem] = useState(null);
     const [formData, setFormData] = useState({ ...createExpenseModel(), amount: '' });
@@ -76,6 +76,12 @@ export default function ExpensesTab({ planId, plan }) {
     if (loading) return (
         <div className="empty-state">
             <p style={{ color: 'var(--muted)' }}>Učitavanje...</p>
+        </div>
+    );
+
+    if (error) return (
+        <div className="empty-state">
+            <p style={{ color: '#e74c3c' }}>{error}</p>
         </div>
     );
 

@@ -36,18 +36,12 @@ export default function PlanDetailPage() {
         try {
             const token = storage.get('token');
             const url = `${import.meta.env.VITE_API_URL}/travel-plans/${id}/pdf`;
-            console.log('PDF URL:', url);
-            console.log('Token:', token ? 'postoji' : 'ne postoji');
-
+           
             const response = await fetch(url, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
-            console.log('Response status:', response.status);
-
             if (!response.ok) {
-                const text = await response.text();
-                console.log('Response body:', text);
                 throw new Error(`Status: ${response.status}`);
             }
 
@@ -61,7 +55,6 @@ export default function PlanDetailPage() {
             document.body.removeChild(a);
             window.URL.revokeObjectURL(objectUrl);
         } catch (err) {
-            console.error('PDF greška:', err);
             alert(`Greška pri generisanju PDF-a: ${err.message}`);
         }
     };
@@ -116,7 +109,7 @@ export default function PlanDetailPage() {
                     marginBottom: '1.5rem',
                     flexWrap: 'wrap'
                 }}>
-                    {/* Lijevo — info */}
+
                     <div style={{ flex: '1', minWidth: '240px' }}>
                         <h1 style={{
                             fontSize: '1.6rem',
@@ -169,7 +162,6 @@ export default function PlanDetailPage() {
                         )}
                     </div>
 
-                    {/* Desno — budget kartice */}
                     <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
                         <div style={{
                             background: 'white',
@@ -251,7 +243,6 @@ export default function PlanDetailPage() {
                     </div>
                 </div>
 
-                {/* Tab content */}
                 <div className="tab-content">
                     {activeTab === 'destinations' && <DestinationsTab planId={id} />}
                     {activeTab === 'activities' && <ActivitiesTab planId={id} />}

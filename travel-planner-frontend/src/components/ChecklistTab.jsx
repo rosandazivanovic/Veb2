@@ -4,7 +4,7 @@ import { useChecklist } from '../hooks/useChecklist';
 import Toast from './Toast';
 import { useToast } from '../hooks/useToast';
 export default function ChecklistTab({ planId }) {
-    const { items, loading, addItem, toggleItem, deleteItem } = useChecklist(planId);
+    const { items, loading,error, addItem, toggleItem, deleteItem } = useChecklist(planId);
     const [newItem, setNewItem] = useState('');
     const { toast, showToast, hideToast } = useToast();
 
@@ -43,6 +43,12 @@ export default function ChecklistTab({ planId }) {
     if (loading) return (
         <div className="empty-state">
             <p style={{ color: 'var(--muted)' }}>Učitavanje...</p>
+        </div>
+    );
+
+    if (error) return (
+        <div className="empty-state">
+            <p style={{ color: '#e74c3c' }}>{error}</p>
         </div>
     );
 

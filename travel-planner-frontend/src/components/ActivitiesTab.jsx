@@ -36,7 +36,7 @@ const buildCalendarDays = (date) => {
 };
 
 export default function ActivitiesTab({ planId }) {
-    const { activities, loading, addActivity, updateActivity, deleteActivity } = useActivities(planId);
+    const { activities, loading,error, addActivity, updateActivity, deleteActivity } = useActivities(planId);
     const [showForm, setShowForm] = useState(false);
     const [editItem, setEditItem] = useState(null);
     const [viewMode, setViewMode] = useState('list');
@@ -124,6 +124,12 @@ export default function ActivitiesTab({ planId }) {
     if (loading) return (
         <div className="empty-state">
             <p style={{ color: 'var(--muted)' }}>Učitavanje...</p>
+        </div>
+    );
+
+    if (error) return (
+        <div className="empty-state">
+            <p style={{ color: '#e74c3c' }}>{error}</p>
         </div>
     );
 

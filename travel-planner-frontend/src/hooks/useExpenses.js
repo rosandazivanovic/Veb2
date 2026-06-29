@@ -4,11 +4,12 @@ import expenseService from '../services/expenseService';
 export function useExpenses(planId) {
     const [expenses, setExpenses] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
     useEffect(() => {
         expenseService.getAll(planId)
             .then(res => setExpenses(res.data))
-            .catch(err => alert(err.response?.data?.message || 'Greška pri učitavanju troškova'))
+            .catch(err => setError(err.response?.data?.message || 'Greška pri učitavanju troškova'))
             .finally(() => setLoading(false));
     }, [planId]);
 
@@ -29,5 +30,5 @@ export function useExpenses(planId) {
         setExpenses(prev => prev.filter(e => e.id !== id));
     };
 
-    return { expenses, loading, addExpense, updateExpense, deleteExpense };
+    return { expenses, loading,error, addExpense, updateExpense, deleteExpense };
 }

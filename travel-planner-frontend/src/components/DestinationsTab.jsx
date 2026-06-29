@@ -22,7 +22,7 @@ export default function DestinationsTab({ planId }) {
             .then(res => {
                 if (mounted) setDestinations(res.data);
             })
-            .catch((err) => alert(err.response?.data?.message || 'Greška pri učitavanju destinacija'))
+            .catch((err) => showToast(err.response?.data?.message || 'Greška pri učitavanju destinacija', 'error'))
             .finally(() => {
                 if (mounted) setLoading(false);
             });

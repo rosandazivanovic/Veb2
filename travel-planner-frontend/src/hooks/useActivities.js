@@ -4,11 +4,12 @@ import activityService from '../services/activityService';
 export function useActivities(planId) {
     const [activities, setActivities] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
     useEffect(() => {
         activityService.getAll(planId)
             .then(res => setActivities(res.data))
-            .catch(err => alert(err.response?.data?.message || 'Greška pri učitavanju aktivnosti'))
+            .catch(err => setError(err.response?.data?.message || 'Greška pri učitavanju aktivnosti'))
             .finally(() => setLoading(false));
     }, [planId]);
 
@@ -29,5 +30,5 @@ export function useActivities(planId) {
         setActivities(prev => prev.filter(a => a.id !== id));
     };
 
-    return { activities, loading, addActivity, updateActivity, deleteActivity };
+    return { activities, loading,error, addActivity, updateActivity, deleteActivity };
 }

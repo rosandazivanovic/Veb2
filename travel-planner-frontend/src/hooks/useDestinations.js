@@ -4,12 +4,13 @@ import destinationService from '../services/destinationService';
 export function useDestinations(planId) {
     const [destinations, setDestinations] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
     useEffect(() => {
         let mounted = true;
         destinationService.getAll(planId)
             .then(res => { if (mounted) setDestinations(res.data); })
-            .catch(err => alert(err.response?.data?.message || 'Greška pri učitavanju destinacija'))
+            .catch(err => { if (mounted) setError(err.response?.data?.message || 'Greška pri učitavanju destinacija'); })
             .finally(() => { if (mounted) setLoading(false); });
         return () => { mounted = false; };
     }, [planId]);
@@ -31,5 +32,5 @@ export function useDestinations(planId) {
         setDestinations(prev => prev.filter(d => d.id !== id));
     };
 
-    return { destinations, loading, addDestination, updateDestination, deleteDestination };
+    return { destinations, loading, error, addDestination, updateDestination, deleteDestination };
 }

@@ -5,11 +5,12 @@ import { createChecklistItemModel } from '../models/TravelPlan';
 export function useChecklist(planId) {
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
     useEffect(() => {
         checklistService.getAll(planId)
             .then(res => setItems(res.data))
-            .catch(err => alert(err.response?.data?.message || 'Greška pri učitavanju checkliste'))
+            .catch(err => setError(err.response?.data?.message || 'Greška pri učitavanju checkliste'))
             .finally(() => setLoading(false));
     }, [planId]);
 
@@ -30,5 +31,5 @@ export function useChecklist(planId) {
         setItems(prev => prev.filter(item => item.id !== id));
     };
 
-    return { items, loading, addItem, toggleItem, deleteItem };
+    return { items, loading,error, addItem, toggleItem, deleteItem };
 }
