@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { FiGrid, FiUsers } from 'react-icons/fi';
 import Navbar from '../components/Navbar';
 import UsersTab from '../components/UsersTab';
 import travelPlanService from '../services/travelPlanService';
-import { formatDate } from '../utils/formatDate';
+import AdminPlanCard from '../components/AdminPlanCard';
 export default function AdminPage() {
     const [searchParams, setSearchParams] = useSearchParams();
     const activeTab = searchParams.get('tab') === 'users' ? 'users' : 'plans';
@@ -14,8 +14,6 @@ export default function AdminPage() {
     const [error, setError] = useState('');
     const [search, setSearch] = useState('');
     const [sortBy, setSortBy] = useState('newest');
-
-    const navigate = useNavigate();
 
     const switchTab = (tab) => {
         setSearchParams(tab === 'users' ? { tab: 'users' } : {});
@@ -244,129 +242,15 @@ export default function AdminPage() {
                                             </p>
                                         </div>
                                     ) : (
-                                        <div className="plans-grid">
-                                            {filteredPlans.map(plan => {
-                                                const budgetPercent = plan.budget > 0
-                                                    ? Math.min((plan.totalSpent / plan.budget) * 100, 100)
-                                                    : 0;
-                                                const remaining = plan.remainingBudget
-                                                    ?? ((plan.budget || 0) - (plan.totalSpent || 0));
-
-                                                return (
-                                                    <div
+                                            <div className="plans-grid">
+                                                {filteredPlans.map(plan => (
+                                                    <AdminPlanCard
                                                         key={plan.id}
-                                                        className="plan-card"
-                                                        style={{ position: 'relative', cursor: 'default' }}
-                                                    >
-                                                        {/* Delete */}
-                                                        <button
-                                                            onClick={() => handleDelete(plan.id)}
-                                                            style={{
-                                                                position: 'absolute',
-                                                                top: '0.75rem',
-                                                                right: '0.75rem',
-                                                                background: 'none',
-                                                                border: 'none',
-                                                                cursor: 'pointer',
-                                                                color: 'var(--muted)',
-                                                                fontSize: '1rem',
-                                                                lineHeight: 1,
-                                                                padding: '0.2rem',
-                                                                borderRadius: '6px',
-                                                                opacity: 0.4,
-                                                                transition: 'opacity 0.2s',
-                                                            }}
-                                                            onMouseEnter={e => e.currentTarget.style.opacity = '1'}
-                                                            onMouseLeave={e => e.currentTarget.style.opacity = '0.4'}
-                                                            title="Obriši plan"
-                                                        >
-                                                            ×
-                                                        </button>
-
-                                                        {/* Naslov */}
-                                                        <h3 style={{
-                                                            fontSize: '1.05rem',
-                                                            fontWeight: 700,
-                                                            color: 'var(--text)',
-                                                            marginBottom: '0.3rem',
-                                                            paddingRight: '1.5rem'
-                                                        }}>
-                                                            {plan.title}
-                                                        </h3>
-
-                                                        {/* Opis */}
-                                                        <p className="plan-description" style={{
-                                                            display: '-webkit-box',
-                                                            WebkitLineClamp: 2,
-                                                            WebkitBoxOrient: 'vertical',
-                                                            overflow: 'hidden'
-                                                        }}>
-                                                            {plan.description || 'Bez opisa'}
-                                                        </p>
-
-                                                        {/* Datumi */}
-                                                        <div style={{
-                                                            fontSize: '0.85rem',
-                                                            color: 'var(--muted)',
-                                                            margin: '0.8rem 0'
-                                                        }}>
-                                                            {formatDate(plan.startDate)} — {formatDate(plan.endDate)}
-                                                        </div>
-
-                                                        {/* Budget */}
-                                                        <div>
-                                                            <div style={{
-                                                                display: 'flex',
-                                                                justifyContent: 'space-between',
-                                                                fontSize: '0.8rem',
-                                                                color: 'var(--muted)',
-                                                                marginBottom: '0.4rem'
-                                                            }}>
-                                                                <span>Potrošeno</span>
-                                                                <span style={{ fontWeight: 700, color: 'var(--text)' }}>
-                                                                    {Number(plan.totalSpent || 0).toFixed(2)} € / {Number(plan.budget || 0).toFixed(2)} €
-                                                                </span>
-                                                            </div>
-                                                            <div className="budget-bar">
-                                                                <div
-                                                                    className="budget-fill"
-                                                                    style={{
-                                                                        width: `${budgetPercent}%`,
-                                                                        background: budgetPercent > 90
-                                                                            ? '#e74c3c'
-                                                                            : budgetPercent > 70
-                                                                                ? 'var(--warning)'
-                                                                                : 'var(--primary)'
-                                                                    }}
-                                                                />
-                                                            </div>
-                                                            <div style={{
-                                                                display: 'flex',
-                                                                justifyContent: 'space-between',
-                                                                marginTop: '0.4rem',
-                                                                fontSize: '0.8rem'
-                                                            }}>
-                                                                <span style={{ color: 'var(--muted)' }}>
-                                                                    {Math.round(budgetPercent)}% iskorišteno
-                                                                </span>
-                                                                <span className="remaining">
-                                                                    Ostalo: {Number(remaining).toFixed(2)} €
-                                                                </span>
-                                                            </div>
-                                                        </div>
-
-                                                        {/* Akcija */}
-                                                        <button
-                                                            className="btn-secondary"
-                                                            onClick={() => navigate(`/plans/${plan.id}`)}
-                                                            style={{ width: '100%', marginTop: '1rem' }}
-                                                        >
-                                                            Otvori plan
-                                                        </button>
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
+                                                        plan={plan}
+                                                        onDelete={handleDelete}
+                                                    />
+                                                ))}
+                                            </div>
                                     )}
                                 </>
                             )}
