@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { FiPlus } from 'react-icons/fi';
 import { useChecklist } from '../hooks/useChecklist';
-
+import Toast from './Toast';
+import { useToast } from '../hooks/useToast';
 export default function ChecklistTab({ planId }) {
     const { items, loading, addItem, toggleItem, deleteItem } = useChecklist(planId);
     const [newItem, setNewItem] = useState('');
+    const { toast, showToast, hideToast } = useToast();
 
     const handleAdd = async (e) => {
         e.preventDefault();
@@ -12,8 +14,9 @@ export default function ChecklistTab({ planId }) {
         try {
             await addItem(newItem);
             setNewItem('');
+            showToast('Stavka uspješno dodana');
         } catch (err) {
-            alert(err.response?.data?.message || 'Greška pri dodavanju stavke');
+            showToast(err.response?.data?.message || 'Greška pri dodavanju stavke', 'error');
         }
     };
 
@@ -28,8 +31,9 @@ export default function ChecklistTab({ planId }) {
     const handleDelete = async (id) => {
         try {
             await deleteItem(id);
+            showToast('Stavka uspješno obrisana');
         } catch (err) {
-            alert(err.response?.data?.message || 'Greška pri brisanju stavke');
+            showToast(err.response?.data?.message || 'Greška pri brisanju stavke', 'error');
         }
     };
 
@@ -129,6 +133,7 @@ export default function ChecklistTab({ planId }) {
                         ))}
                 </div>
             )}
+            {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
         </div>
     );
 }

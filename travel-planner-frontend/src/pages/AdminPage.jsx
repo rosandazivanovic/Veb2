@@ -5,6 +5,8 @@ import Navbar from '../components/Navbar';
 import UsersTab from '../components/UsersTab';
 import travelPlanService from '../services/travelPlanService';
 import AdminPlanCard from '../components/AdminPlanCard';
+import Toast from '../components/Toast';
+import { useToast } from '../hooks/useToast';
 export default function AdminPage() {
     const [searchParams, setSearchParams] = useSearchParams();
     const activeTab = searchParams.get('tab') === 'users' ? 'users' : 'plans';
@@ -14,6 +16,7 @@ export default function AdminPage() {
     const [error, setError] = useState('');
     const [search, setSearch] = useState('');
     const [sortBy, setSortBy] = useState('newest');
+    const { toast, showToast, hideToast } = useToast();
 
     const switchTab = (tab) => {
         setSearchParams(tab === 'users' ? { tab: 'users' } : {});
@@ -31,8 +34,9 @@ export default function AdminPage() {
         try {
             await travelPlanService.delete(id);
             setPlans(prev => prev.filter(plan => plan.id !== id));
+            showToast('Plan uspješno obrisan');
         } catch (err) {
-            alert(err.response?.data?.message || 'Greška pri brisanju plana');
+            showToast(err.response?.data?.message || 'Greška pri brisanju plana', 'error');
         }
     };
 
@@ -81,7 +85,7 @@ export default function AdminPage() {
             <Navbar />
             <div className="dashboard-container">
 
-                {/* Header */}
+                
                 <div className="dashboard-header">
                     <div>
                         <h1>Admin panel</h1>
@@ -91,7 +95,7 @@ export default function AdminPage() {
                     </div>
                 </div>
 
-                {/* Tabs */}
+                
                 <div className="tabs">
                     <button
                         className={`tab-btn ${activeTab === 'plans' ? 'active' : ''}`}
@@ -121,7 +125,7 @@ export default function AdminPage() {
 
                             {!loading && !error && (
                                 <>
-                                    {/* Stat cards */}
+                                    
                                     <div style={{
                                         display: 'grid',
                                         gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
@@ -184,7 +188,7 @@ export default function AdminPage() {
                                         ))}
                                     </div>
 
-                                    {/* Toolbar */}
+                                    
                                     <div style={{
                                         display: 'flex',
                                         gap: '0.75rem',
@@ -230,7 +234,7 @@ export default function AdminPage() {
                                         </select>
                                     </div>
 
-                                    {/* Empty */}
+                                    
                                     {filteredPlans.length === 0 ? (
                                         <div className="empty-state">
                                             <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>🔍</div>
@@ -259,6 +263,7 @@ export default function AdminPage() {
 
                     {activeTab === 'users' && <UsersTab />}
                 </div>
+                {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
             </div>
         </div>
     );

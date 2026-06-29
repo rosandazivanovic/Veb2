@@ -5,7 +5,8 @@ import travelPlanService from '../services/travelPlanService';
 import TravelPlanCard from '../components/TravelPlanCard';
 import CreatePlanModal from '../components/CreatePlanModal';
 import Navbar from '../components/Navbar';
-
+import Toast from '../components/Toast';
+import { useToast } from '../hooks/useToast';
 export default function DashboardPage() {
     const [plans, setPlans] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -13,6 +14,7 @@ export default function DashboardPage() {
     const [showModal, setShowModal] = useState(false);
     const { user } = useAuth();
     const navigate = useNavigate();
+    const { toast, showToast, hideToast } = useToast();
 
     useEffect(() => {
         travelPlanService.getAll()
@@ -24,6 +26,7 @@ export default function DashboardPage() {
     const handleCreate = (newPlan) => {
         setPlans([...plans, newPlan]);
         setShowModal(false);
+        showToast('Plan putovanja uspješno kreiran');
     };
 
     const handleDelete = async (id) => {
@@ -31,8 +34,9 @@ export default function DashboardPage() {
         try {
             await travelPlanService.delete(id);
             setPlans(plans.filter(p => p.id !== id));
+            showToast('Plan putovanja uspješno obrisan');
         } catch {
-            alert('Greška pri brisanju plana');
+            showToast('Greška pri brisanju plana', 'error');
         }
     };
 
@@ -48,7 +52,6 @@ export default function DashboardPage() {
             <Navbar />
             <div className="dashboard-container">
 
-                {/* Header */}
                 <div className="dashboard-header">
                     <div>
                         <h1>{greeting()}, {user?.name}! ✈️</h1>
@@ -63,17 +66,14 @@ export default function DashboardPage() {
                     </button>
                 </div>
 
-                {/* Loading */}
                 {loading && (
                     <div className="empty-state">
                         <p style={{ color: 'var(--muted)' }}>Učitavanje planova...</p>
                     </div>
                 )}
 
-                {/* Error */}
                 {error && <p className="error-message">{error}</p>}
 
-                {/* Empty state */}
                 {!loading && !error && plans.length === 0 && (
                     <div className="empty-state">
                         <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🗺️</div>
@@ -89,7 +89,7 @@ export default function DashboardPage() {
                     </div>
                 )}
 
-                {/* Plans grid */}
+                
                 {!loading && plans.length > 0 && (
                     <div className="plans-grid">
                         {plans.map(plan => (
@@ -109,6 +109,7 @@ export default function DashboardPage() {
                         onCreate={handleCreate}
                     />
                 )}
+                {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
             </div>
         </div>
     );

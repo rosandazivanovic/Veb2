@@ -3,6 +3,8 @@ import { FiPlus, FiEdit2, FiTrash2, FiMapPin, FiClock, FiCalendar } from 'react-
 import { useActivities } from '../hooks/useActivities';
 import { createActivityModel } from '../models/TravelPlan';
 import { STATUS } from '../constants/activityStatuses';
+import Toast from './Toast';
+import { useToast } from '../hooks/useToast';
 
 const WEEKDAYS = ['Pon', 'Uto', 'Sri', 'Čet', 'Pet', 'Sub', 'Ned'];
 
@@ -41,6 +43,7 @@ export default function ActivitiesTab({ planId }) {
     const [calendarDate, setCalendarDate] = useState(new Date());
     const [formData, setFormData] = useState({ ...createActivityModel(), time: '09:00:00', estimatedCost: '' });
     const [errors, setErrors] = useState({});
+    const { toast, showToast, hideToast } = useToast();
 
     const resetForm = () => {
         setFormData({ ...createActivityModel(), time: '09:00:00', estimatedCost: '' });
@@ -84,12 +87,14 @@ export default function ActivitiesTab({ planId }) {
             const payload = { ...formData, estimatedCost: Number(formData.estimatedCost) || 0 };
             if (editItem) {
                 await updateActivity(editItem.id, payload);
+                showToast('Aktivnost uspješno ažurirana');
             } else {
                 await addActivity(payload);
+                showToast('Aktivnost uspješno dodana');
             }
             resetForm();
         } catch (err) {
-            alert(err.response?.data?.message || 'Greška pri čuvanju aktivnosti');
+            showToast(err.response?.data?.message || 'Greška pri čuvanju aktivnosti', 'error');
         }
     };
 
@@ -97,8 +102,9 @@ export default function ActivitiesTab({ planId }) {
         if (!window.confirm('Obrisati aktivnost?')) return;
         try {
             await deleteActivity(id);
+            showToast('Aktivnost uspješno obrisana');
         } catch (err) {
-            alert(err.response?.data?.message || 'Greška pri brisanju');
+            showToast(err.response?.data?.message || 'Greška pri brisanju', 'error');
         }
     };
 
@@ -379,6 +385,7 @@ export default function ActivitiesTab({ planId }) {
                     </div>
                 </div>
             )}
+            {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
         </div>
     );
 }

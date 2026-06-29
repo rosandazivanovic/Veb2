@@ -4,13 +4,15 @@ import { useExpenses } from '../hooks/useExpenses';
 import { createExpenseModel } from '../models/TravelPlan';
 import { CATEGORY_META, CATEGORIES } from '../constants/expenseCategories';
 import { formatDate } from '../utils/formatDate';
-
+import Toast from './Toast';
+import { useToast } from '../hooks/useToast';
 export default function ExpensesTab({ planId, plan }) {
     const { expenses, loading, addExpense, updateExpense, deleteExpense } = useExpenses(planId);
     const [showForm, setShowForm] = useState(false);
     const [editItem, setEditItem] = useState(null);
     const [formData, setFormData] = useState({ ...createExpenseModel(), amount: '' });
     const [errors, setErrors] = useState({});
+    const { toast, showToast, hideToast } = useToast();
 
     const totalSpent = expenses.reduce((sum, e) => sum + e.amount, 0);
     const budget = plan?.budget || 0;
@@ -50,12 +52,14 @@ export default function ExpensesTab({ planId, plan }) {
             const payload = { ...formData, amount: Number(formData.amount) };
             if (editItem) {
                 await updateExpense(editItem.id, payload);
+                showToast('Trošak uspješno ažuriran');
             } else {
                 await addExpense(payload);
+                showToast('Trošak uspješno dodan');
             }
             resetForm();
         } catch (err) {
-            alert(err.response?.data?.message || 'Greška pri čuvanju troška');
+            showToast(err.response?.data?.message || 'Greška pri čuvanju troška', 'error');
         }
     };
 
@@ -63,8 +67,9 @@ export default function ExpensesTab({ planId, plan }) {
         if (!window.confirm('Obrisati trošak?')) return;
         try {
             await deleteExpense(id);
+            showToast('Trošak uspješno obrisan');
         } catch (err) {
-            alert(err.response?.data?.message || 'Greška pri brisanju');
+            showToast(err.response?.data?.message || 'Greška pri brisanju', 'error');
         }
     };
 
@@ -91,7 +96,7 @@ export default function ExpensesTab({ planId, plan }) {
                 </button>
             </div>
 
-            {/* Budget summary */}
+
             <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
@@ -130,7 +135,7 @@ export default function ExpensesTab({ planId, plan }) {
                 ))}
             </div>
 
-            {/* Form */}
+
             {showForm && (
                 <form className="inline-form" onSubmit={handleSubmit}>
                     <div className="form-row">
@@ -191,7 +196,7 @@ export default function ExpensesTab({ planId, plan }) {
                 </form>
             )}
 
-            {/* Lista */}
+            
             {expenses.length === 0 ? (
                 <div className="empty-text">
                     <p>Nema troškova. Dodajte prvi trošak.</p>
@@ -264,6 +269,7 @@ export default function ExpensesTab({ planId, plan }) {
                     </div>
                 </div>
             )}
+            {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
         </div>
     );
 }

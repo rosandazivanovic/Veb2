@@ -3,7 +3,8 @@ import { FiMapPin, FiEdit2, FiTrash2, FiCalendar } from 'react-icons/fi';
 import destinationService from '../services/destinationService';
 import { createDestinationModel } from '../models/TravelPlan';
 import { formatDate } from '../utils/formatDate';
-
+import Toast from './Toast';
+import { useToast } from '../hooks/useToast';
 
 export default function DestinationsTab({ planId }) {
     const [destinations, setDestinations] = useState([]);
@@ -12,6 +13,7 @@ export default function DestinationsTab({ planId }) {
     const [editItem, setEditItem] = useState(null);
     const [formData, setFormData] = useState(createDestinationModel());
     const [errors, setErrors] = useState({});
+    const { toast, showToast, hideToast } = useToast();
 
     useEffect(() => {
         let mounted = true;
@@ -66,13 +68,15 @@ export default function DestinationsTab({ planId }) {
             if (editItem) {
                 const res = await destinationService.update(planId, editItem.id, formData);
                 setDestinations(prev => prev.map(d => (d.id === editItem.id ? res.data : d)));
+                showToast('Destinacija uspješno ažurirana');
             } else {
                 const res = await destinationService.create(planId, formData);
                 setDestinations(prev => [...prev, res.data]);
+                showToast('Destinacija uspješno dodana');
             }
             resetForm();
         } catch (err) {
-            alert(err.response?.data?.message || 'Greška pri čuvanju destinacije');
+            showToast(err.response?.data?.message || 'Greška pri čuvanju destinacije', 'error');
         }
     };
 
@@ -81,8 +85,9 @@ export default function DestinationsTab({ planId }) {
         try {
             await destinationService.delete(planId, id);
             setDestinations(prev => prev.filter(d => d.id !== id));
+            showToast('Destinacija uspješno obrisana');
         } catch (err) {
-            alert(err.response?.data?.message || 'Greška pri brisanju');
+            showToast(err.response?.data?.message || 'Greška pri brisanju', 'error');
         }
     };
 
@@ -236,6 +241,7 @@ export default function DestinationsTab({ planId }) {
                     ))}
                 </div>
             )}
+            {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
         </div>
     );
 }
