@@ -24,7 +24,7 @@ export default function ChecklistTab({ planId }) {
         try {
             await toggleItem(id);
         } catch (err) {
-            alert(err.response?.data?.message || 'Greška pri ažuriranju stavke');
+            showToast(err.response?.data?.message || 'Greška pri ažuriranju stavke', 'error');
         }
     };
 
