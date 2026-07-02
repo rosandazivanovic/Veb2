@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import travelPlanService from '../services/travelPlanService';
-import { createTravelPlanModel } from '../models/TravelPlan';
+import travelPlanService from '../../services/travelPlanService';
+import { createTravelPlanModel } from '../../models/TravelPlan';
 import Toast from '../shared/Toast';
-import { useToast } from '../hooks/useToast';
+import { useToast } from '../../hooks/useToast';
 export default function EditPlanModal({ plan, onClose, onUpdate }) {
     const [formData, setFormData] = useState({
         ...createTravelPlanModel(plan),

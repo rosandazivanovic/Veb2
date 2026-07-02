@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import checklistService from '../services/checklistService';
-import { createChecklistItemModel } from '../models/TravelPlan';
+import { createChecklistItemModel } from '../models/Checklist';
 
 export function useChecklist(planId) {
     const [items, setItems] = useState([]);

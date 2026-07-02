@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { FiUser, FiShield, FiSearch } from 'react-icons/fi';
-import userService from '../services/userService';
-import { useAuth } from '../context/AuthContext';
-import { formatDate } from '../utils/formatDate';
+import userService from '../../services/userService';
+import { useAuth } from '../../context/AuthContext';
+import { formatDate } from '../../utils/formatDate';
 import Toast from '../shared/Toast';
-import { useToast } from '../hooks/useToast';
+import { useToast } from '../../hooks/useToast';
 
 const getInitials = (name = '') =>
     name

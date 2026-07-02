@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import { FiEdit2, FiTrash2, FiPlus } from 'react-icons/fi';
-import { useExpenses } from '../hooks/useExpenses';
-import { createExpenseModel } from '../models/TravelPlan';
-import { CATEGORY_META, CATEGORIES } from '../constants/expenseCategories';
-import { formatDate } from '../utils/formatDate';
-
+import { useExpenses } from '../../hooks/useExpenses';
+import { createExpenseModel } from '../../models/Expense';
+import { CATEGORY_META, CATEGORIES } from '../../constants/expenseCategories';
+import { formatDate } from '../../utils/formatDate';
 import Toast from '../shared/Toast';
-
-import { useToast } from '../hooks/useToast';
+import { useToast } from '../../hooks/useToast';
 export default function ExpensesTab({ planId, plan }) {
     const { expenses, loading, error, addExpense, updateExpense, deleteExpense } = useExpenses(planId);
     const [showForm, setShowForm] = useState(false);

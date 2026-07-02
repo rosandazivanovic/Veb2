@@ -1,4 +1,4 @@
-import { formatDate } from '../utils/formatDate';
+import { formatDate } from '../../utils/formatDate';
 
 export default function TravelPlanCard({ plan, onClick, onDelete }) {
     const budgetPercent = plan.budget > 0

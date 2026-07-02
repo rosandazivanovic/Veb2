@@ -1,6 +1,6 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FiGrid, FiUsers, FiLogOut, FiArrowLeft } from 'react-icons/fi';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 
 export default function Navbar({ planTitle, activeTab, onTabChange, onBack, onEdit, onShare, onExportPdf }) {
     const { user, logout } = useAuth();

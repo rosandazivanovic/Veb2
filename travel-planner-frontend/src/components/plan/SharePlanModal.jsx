@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
-import sharedPlanService from '../services/sharedPlanService';
-import { createShareModel } from '../models/TravelPlan';
-import { formatDate } from '../utils/formatDate';
+import sharedPlanService from '../../services/sharedPlanService';
+import { createShareModel } from '../../models/Share';
+import { formatDate } from '../../utils/formatDate';
 
 export default function SharePlanModal({ planId, onClose }) {
     const [shareData, setShareData] = useState(null);

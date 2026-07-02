@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import travelPlanService from '../services/travelPlanService';
-import { createTravelPlanModel } from '../models/TravelPlan';
+import travelPlanService from '../../services/travelPlanService';
+import { createTravelPlanModel } from '../../models/TravelPlan';
 
 export default function CreatePlanModal({ onClose, onCreate }) {
     const [formData, setFormData] = useState({ ...createTravelPlanModel(), budget: '' });

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { FiPlus } from 'react-icons/fi';
-import { useChecklist } from '../hooks/useChecklist';
+import { useChecklist } from '../../hooks/useChecklist';
 import Toast from '../shared/Toast';
-import { useToast } from '../hooks/useToast';
+import { useToast } from '../../hooks/useToast';
 export default function ChecklistTab({ planId }) {
     const { items, loading,error, addItem, toggleItem, deleteItem } = useChecklist(planId);
     const [newItem, setNewItem] = useState('');
