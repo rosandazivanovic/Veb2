@@ -326,7 +326,7 @@ export default function ActivitiesTab({ planId }) {
                             fontWeight: 700, fontSize: '0.95rem',
                             color: 'var(--text)', textTransform: 'capitalize'
                         }}>
-                            {calendarDate.toLocaleDateString('hr', { month: 'long', year: 'numeric' })}
+                            {calendarDate.toLocaleDateString('sr-Latn-BA', { month: 'long', year: 'numeric' })}
                         </span>
                         <button type="button" className="btn-secondary"
                             onClick={() => shiftMonth(1)} style={{ fontSize: '0.85rem' }}>

@@ -87,8 +87,8 @@ export default function ChecklistTab({ planId }) {
                 <input
                     value={newItem}
                     onChange={e => setNewItem(e.target.value)}
-                    placeholder="Dodaj stavku (npr. Pasoš, Punjač...)"
-                    style={{ flex: 1 }}
+                    placeholder=" Dodaj stavku (npr. Pasoš, Punjač...)"
+                    style={{ flex: 1, borderRadius: '12px', border: '1.5px solid var(--line)' }}
                 />
                 <button type="submit" className="btn-primary"
                     style={{ display: 'flex', alignItems: 'center', gap: '5px', flexShrink: 0 }}>

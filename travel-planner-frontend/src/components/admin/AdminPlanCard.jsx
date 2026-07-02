@@ -65,7 +65,7 @@ export default function AdminPlanCard({ plan, onDelete }) {
                         style={{
                             width: `${budgetPercent}%`,
                             background: budgetPercent > 90 ? '#e74c3c'
-                                : budgetPercent > 70 ? 'var(--warning)' : 'var(--primary)'
+                                : budgetPercent > 70 ? '#f59e0b' : '#10b981'
                         }}
                     />
                 </div>
