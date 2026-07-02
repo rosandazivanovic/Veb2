@@ -12,7 +12,7 @@ export default function AdminPlanCard({ plan, onDelete }) {
         ?? ((plan.budget || 0) - (plan.totalSpent || 0));
 
     return (
-        <div className="plan-card" style={{ position: 'relative', cursor: 'default' }}>
+        <div className="plan-card" style={{ position: 'relative', cursor: 'default' }} onClick={() => navigate(`/plans/${plan.id}`)}>
 
             <button
                 onClick={() => onDelete(plan.id)}
@@ -82,13 +82,6 @@ export default function AdminPlanCard({ plan, onDelete }) {
                 </div>
             </div>
 
-            <button
-                className="btn-secondary"
-                onClick={() => navigate(`/plans/${plan.id}`)}
-                style={{ width: '100%', marginTop: '1rem' }}
-            >
-                Otvori plan
-            </button>
         </div>
     );
 }
