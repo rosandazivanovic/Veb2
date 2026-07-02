@@ -4,7 +4,9 @@ import { useExpenses } from '../hooks/useExpenses';
 import { createExpenseModel } from '../models/TravelPlan';
 import { CATEGORY_META, CATEGORIES } from '../constants/expenseCategories';
 import { formatDate } from '../utils/formatDate';
-import Toast from './Toast';
+
+import Toast from '../shared/Toast';
+
 import { useToast } from '../hooks/useToast';
 export default function ExpensesTab({ planId, plan }) {
     const { expenses, loading, error, addExpense, updateExpense, deleteExpense } = useExpenses(planId);

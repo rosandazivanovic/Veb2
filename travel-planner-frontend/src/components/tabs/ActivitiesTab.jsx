@@ -3,7 +3,7 @@ import { FiPlus, FiEdit2, FiTrash2, FiMapPin, FiClock, FiCalendar } from 'react-
 import { useActivities } from '../hooks/useActivities';
 import { createActivityModel } from '../models/TravelPlan';
 import { STATUS } from '../constants/activityStatuses';
-import Toast from './Toast';
+import Toast from '../shared/Toast';
 import { useToast } from '../hooks/useToast';
 
 const WEEKDAYS = ['Pon', 'Uto', 'Sri', 'Čet', 'Pet', 'Sub', 'Ned'];

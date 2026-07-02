@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/shared/Navbar';
 import travelPlanService from '../services/travelPlanService';
-import DestinationsTab from '../components/DestinationsTab';
-import ActivitiesTab from '../components/ActivitiesTab';
-import ExpensesTab from '../components/ExpensesTab';
-import ChecklistTab from '../components/ChecklistTab';
-import SharePlanModal from '../components/SharePlanModal';
-import EditPlanModal from '../components/EditPlanModal';
+import DestinationsTab from '../components/tabs/DestinationsTab';
+import ActivitiesTab from '../components/tabs/ActivitiesTab';
+import ExpensesTab from '../components/tabs/ExpensesTab';
+import ChecklistTab from '../components/tabs/ChecklistTab';
+import SharePlanModal from '../components/plan/SharePlanModal';
+import EditPlanModal from '../components/plan/EditPlanModal';
 import { formatDate } from '../utils/formatDate';
 import { storage } from '../services/storage';
 

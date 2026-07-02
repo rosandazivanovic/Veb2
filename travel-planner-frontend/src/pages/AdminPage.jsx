@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { FiGrid, FiUsers } from 'react-icons/fi';
-import Navbar from '../components/Navbar';
-import UsersTab from '../components/UsersTab';
+import Navbar from '../components/shared/Navbar';
+import UsersTab from '../components/admin/UsersTab';
 import travelPlanService from '../services/travelPlanService';
-import AdminPlanCard from '../components/AdminPlanCard';
-import Toast from '../components/Toast';
+import AdminPlanCard from '../components/admin/AdminPlanCard';
+import Toast from '../components/shared/Toast';
 import { useToast } from '../hooks/useToast';
 export default function AdminPage() {
     const [searchParams, setSearchParams] = useSearchParams();

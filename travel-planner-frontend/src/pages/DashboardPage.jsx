@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import travelPlanService from '../services/travelPlanService';
-import TravelPlanCard from '../components/TravelPlanCard';
-import CreatePlanModal from '../components/CreatePlanModal';
-import Navbar from '../components/Navbar';
-import Toast from '../components/Toast';
+import TravelPlanCard from '../components/plan/TravelPlanCard';
+import CreatePlanModal from '../components/plan/CreatePlanModal';
+import Navbar from '../components/shared/Navbar';
+import Toast from '../components/shared/Toast';
 import { useToast } from '../hooks/useToast';
 export default function DashboardPage() {
     const [plans, setPlans] = useState([]);

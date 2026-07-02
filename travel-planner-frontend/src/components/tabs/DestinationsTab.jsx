@@ -3,7 +3,7 @@ import { FiMapPin, FiEdit2, FiTrash2, FiCalendar } from 'react-icons/fi';
 import destinationService from '../services/destinationService';
 import { createDestinationModel } from '../models/TravelPlan';
 import { formatDate } from '../utils/formatDate';
-import Toast from './Toast';
+import Toast from '../shared/Toast';
 import { useToast } from '../hooks/useToast';
 
 export default function DestinationsTab({ planId }) {
